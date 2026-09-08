@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>مصلى العياش</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#146c60">
+
+<!-- دعم إضافة التطبيق على الشاشة الرئيسية بالآيفون -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="مصلى العياش">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <header class="top">
+    <h1>🕌 مصلى العياش</h1>
+    <div class="sub" id="weekLabel">—</div>
+  </header>
+
+  <main>
+
+    <!-- الرئيسية -->
+    <section id="panel-home" class="tab-panel active">
+      <div class="card stats-row">
+        <div class="stat">
+          <div class="num" id="statPaidCount">0/0</div>
+          <div class="label">دفعوا هالأسبوع</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statWeekTotal">0.00</div>
+          <div class="label">مجموع هالأسبوع</div>
+        </div>
+      </div>
+
+      <div id="homeEmpty" class="empty" style="display:none;">
+        ما في شباب مضافين لسا. دوس على + تحت تحت لتضيف أول شخص.
+      </div>
+
+      <div id="dueSection">
+        <div class="section-title">⏳ لسا ما دفعوا</div>
+        <div id="dueList"></div>
+      </div>
+
+      <div id="paidSection">
+        <div class="section-title">✅ دفعوا هالأسبوع</div>
+        <div id="paidList"></div>
+      </div>
+    </section>
+
+    <!-- الأعضاء -->
+    <section id="panel-members" class="tab-panel">
+      <div class="section-title">الشباب</div>
+      <div id="membersEmpty" class="empty" style="display:none;">لسا ما في حدا مضاف.</div>
+      <div id="membersList"></div>
+    </section>
+
+    <!-- السجل -->
+    <section id="panel-history" class="tab-panel">
+      <div class="card stats-row">
+        <div class="stat">
+          <div class="num" id="statOverallTotal">0.00</div>
+          <div class="label">المجموع الكلي</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statWeeksCount">0</div>
+          <div class="label">عدد الأسابيع</div>
+        </div>
+      </div>
+      <div class="section-title">سجل الأسابيع</div>
+      <div id="historyEmpty" class="empty" style="display:none;">ما في سجل دفعات لسا.</div>
+      <div id="historyList"></div>
+    </section>
+
+    <!-- الإعدادات -->
+    <section id="panel-settings" class="tab-panel">
+
+      <div class="card">
+        <div class="section-title">مبلغ الاشتراك</div>
+        <div class="field">
+          <label for="amountInput">المبلغ الأسبوعي (دينار)</label>
+          <input type="number" id="amountInput" step="0.05" min="0">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="weekStartSelect">بداية الأسبوع</label>
+          <select id="weekStartSelect">
+            <option value="0">الأحد</option>
+            <option value="1">الاثنين</option>
+            <option value="2">الثلاثاء</option>
+            <option value="3">الأربعاء</option>
+            <option value="4">الخميس</option>
+            <option value="5">الجمعة</option>
+            <option value="6">السبت</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">🔔 التذكيرات</div>
+        <p style="font-size:13px; color:var(--text-dim); margin-top:0;">
+          الحالة: <b id="notifStatus" style="color:var(--gold);">—</b>
+        </p>
+        <button class="btn" id="enableNotifBtn" style="margin-bottom:10px;">تفعيل التنبيهات</button>
+        <button class="btn secondary" id="testNotifBtn">إرسال تذكير تجريبي الآن</button>
+        <div class="banner" style="margin-top:14px;">
+          ملاحظة مهمة على الآيفون: نظام آبل ما بسمح بإشعارات تلقائية والتطبيق مسكر تمامًا بدون سيرفر (وهاد التطبيق شغال محليًا بدون أي سيرفر أو اشتراك). التذكير بينفعل تلقائيًا كل ما تفتح التطبيق. لأفضل نتيجة: ضيف أوتوميشن أسبوعي من تطبيق <b>Shortcuts</b> يفتحلك التطبيق بيوم وساعة محددة (مجاني ومدمج بالآيفون).
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">💾 نسخة احتياطية</div>
+        <p style="font-size:13px; color:var(--text-dim); margin-top:0;">
+          كل البيانات محفوظة على جهازك بس. خذلك نسخة احتياطية بين فترة وفترة حتى ما تضيع لو مسحت المتصفح.
+        </p>
+        <button class="btn secondary" id="exportBtn" style="margin-bottom:10px;">تصدير نسخة احتياطية</button>
+        <label class="btn secondary" style="display:block; text-align:center; cursor:pointer;">
+          استيراد نسخة احتياطية
+          <input type="file" id="importFile" accept="application/json" style="display:none;">
+        </label>
+      </div>
+
+      <div class="footer-note">
+        تطبيق مصلى العياش · بيانات محلية بالكامل · بدون سيرفر · بدون أي اشتراك
+      </div>
+    </section>
+
+  </main>
+
+  <button class="fab-add" id="fabAdd">+</button>
+
+  <nav class="tabbar">
+    <button id="tab-home" class="active"><span class="ic">🏠</span>الرئيسية</button>
+    <button id="tab-members"><span class="ic">👥</span>الشباب</button>
+    <button id="tab-history"><span class="ic">📊</span>السجل</button>
+    <button id="tab-settings"><span class="ic">⚙️</span>الإعدادات</button>
+  </nav>
+
+</div>
+
+<!-- نافذة إضافة عضو -->
+<div id="addMemberModal" class="modal-backdrop hidden">
+  <div class="modal-sheet">
+    <h3>إضافة شخص جديد</h3>
+    <form id="addMemberForm">
+      <div class="field">
+        <label for="newMemberName">الاسم</label>
+        <input type="text" id="newMemberName" placeholder="مثلاً: أبو خالد" required>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn secondary" id="closeModalBtn">إلغاء</button>
+        <button type="submit" class="btn">إضافة</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- نافذة تسجيل / تعديل دفعة -->
+<div id="payAmountModal" class="modal-backdrop hidden">
+  <div class="modal-sheet">
+    <h3 id="payModalTitle">تسجيل دفعة</h3>
+    <form id="payAmountForm">
+      <div class="field">
+        <label for="payAmountInput">المبلغ (دينار)</label>
+        <input type="number" id="payAmountInput" step="0.05" min="0" required>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn secondary" id="closePayModalBtn">إلغاء</button>
+        <button type="submit" class="btn">تأكيد</button>
+      </div>
+      <button type="button" class="btn danger" id="removePayBtn" style="margin-top:10px; display:none;">حذف الدفعة</button>
+    </form>
+  </div>
+</div>
+
+<!-- نافذة تفاصيل الشخص -->
+<div id="memberDetailModal" class="modal-backdrop hidden">
+  <div class="modal-sheet" style="max-height:80vh; display:flex; flex-direction:column;">
+    <h3 id="detailName">—</h3>
+    <div class="stats-row" style="margin-bottom:14px;">
+      <div class="stat">
+        <div class="num" id="detailTotal">0.00</div>
+        <div class="label">مجموع الدفعات</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="detailCount">0</div>
+        <div class="label">عدد الدفعات</div>
+      </div>
+    </div>
+    <div id="detailList" style="overflow-y:auto; flex:1;"></div>
+    <button type="button" class="btn secondary" id="closeDetailModalBtn" style="margin-top:14px;">إغلاق</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
